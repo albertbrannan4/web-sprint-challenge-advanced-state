@@ -50,12 +50,12 @@ export function fetchQuiz() {
     // First, dispatch an action to reset the quiz state (so the "Loading next quiz..." message can display)
     // On successful GET:
     // - Dispatch an action to send the obtained quiz to its state
-    dispatch(setMessage("Loading next quiz..."));
+    //dispatch(setMessage("Loading next quiz..."));
     axios
       .get("http://localhost:9000/api/quiz/next")
       .then((res) => {
         dispatch(setQuiz(res.data));
-        dispatch(setMessage(""));
+        //dispatch(setMessage(""));
       })
       .catch((err) => {
         console.error(err);
@@ -63,19 +63,42 @@ export function fetchQuiz() {
       });
   };
 }
-export function postAnswer() {
+export function postAnswer(quiz_id, answerId) {
   return function (dispatch) {
     // On successful POST:
     // - Dispatch an action to reset the selected answer state
     // - Dispatch an action to set the server message to state
     // - Dispatch the fetching of the next quiz
+    axios
+      .post("http://localhost:9000/api/quiz/answer", {
+        quiz_id: quiz_id,
+        answer_id: answerId,
+      })
+      .then((resp) => {
+        dispatch(fetchQuiz());
+        dispatch(setMessage(resp.data.message));
+      })
+      .catch((err) => console.error(err));
   };
 }
-export function postQuiz() {
+export function postQuiz(question, trueAnswer, falseAnswer) {
   return function (dispatch) {
     // On successful POST:
     // - Dispatch the correct message to the the appropriate state
     // - Dispatch the resetting of the form
+    axios
+      .post("http://localhost:9000/api/quiz/new", {
+        question_text: question,
+        true_answer_text: trueAnswer,
+        false_answer_text: falseAnswer,
+      })
+      .then((res) => {
+        dispatch(
+          setMessage(`Congrats: "${res.data.question}" is a great question!`)
+        );
+        dispatch(resetForm());
+      })
+      .catch((err) => console.error(err));
   };
 }
 // ❗ On promise rejections, use log statements or breakpoints, and put an appropriate error message in state
