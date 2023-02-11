@@ -38,6 +38,8 @@ function selectedAnswer(state = initialSelectedAnswerState, action) {
   switch (action.type) {
     case SET_SELECTED_ANSWER:
       return action.payload;
+    case SET_QUIZ_INTO_STATE:
+      return initialSelectedAnswerState;
     default:
       return state;
   }

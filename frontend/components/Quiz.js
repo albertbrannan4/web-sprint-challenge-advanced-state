@@ -1,10 +1,19 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { fetchQuiz, selectAnswer, postAnswer } from "../state/action-creators";
 function Quiz(props) {
+  const [disable, setDisable] = useState(true);
   useEffect(() => {
     if (!props.quiz) props.fetchQuiz();
   }, []);
+  useEffect(() => {
+    if (props.selectedAnswer) {
+      setDisable(false);
+    } else {
+      setDisable(true);
+    }
+  }, [props.selectedAnswer]);
+
   const submitAnswer = () => {
     const { selectedAnswer } = props;
     const { quiz_id } = props.quiz;
@@ -64,7 +73,11 @@ function Quiz(props) {
               </div>
             </div>
 
-            <button onClick={() => submitAnswer()} id="submitAnswerBtn">
+            <button
+              disabled={disable}
+              onClick={() => submitAnswer()}
+              id="submitAnswerBtn"
+            >
               Submit answer
             </button>
           </>

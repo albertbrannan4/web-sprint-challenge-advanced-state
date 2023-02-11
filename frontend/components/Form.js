@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { inputChange, postQuiz } from "../state/action-creators";
 
 export function Form(props) {
+  const [disable, setDisable] = useState(true);
+  const { newQuestion, newTrueAnswer, newFalseAnswer } = props.form;
+
   const onChange = (evt) => {
     const { name, value } = evt.target;
     props.inputChange(name, value);
@@ -10,7 +13,6 @@ export function Form(props) {
 
   const onSubmit = (evt) => {
     evt.preventDefault();
-    const { newQuestion, newTrueAnswer, newFalseAnswer } = props.form;
     props.postQuiz(newQuestion, newTrueAnswer, newFalseAnswer);
   };
 
@@ -24,6 +26,7 @@ export function Form(props) {
         id="newQuestion"
         value={props.form.newQuestion}
         placeholder="Enter question"
+        required
       />
       <input
         maxLength={50}
@@ -32,6 +35,7 @@ export function Form(props) {
         id="newTrueAnswer"
         value={props.form.newTrueAnswer}
         placeholder="Enter true answer"
+        required
       />
       <input
         maxLength={50}
@@ -40,7 +44,9 @@ export function Form(props) {
         id="newFalseAnswer"
         value={props.form.newFalseAnswer}
         placeholder="Enter false answer"
+        required
       />
+
       <button id="submitNewQuizBtn">Submit new quiz</button>
     </form>
   );
