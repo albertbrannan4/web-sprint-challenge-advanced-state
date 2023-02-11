@@ -8,14 +8,21 @@ export function Form(props) {
 
   const onChange = (evt) => {
     const { name, value } = evt.target;
-    props.inputChange(name, value);
+    props.inputChange(name, value.trim());
   };
 
   const onSubmit = (evt) => {
     evt.preventDefault();
     props.postQuiz(newQuestion, newTrueAnswer, newFalseAnswer);
   };
-
+  useEffect(() => {
+    if (newQuestion && newTrueAnswer && newFalseAnswer) {
+      return setDisable(false);
+    } else {
+      return setDisable(true);
+    }
+  }, [props.form]);
+  console.log(props);
   return (
     <form id="form" onSubmit={onSubmit}>
       <h2>Create New Quiz</h2>
@@ -46,8 +53,13 @@ export function Form(props) {
         placeholder="Enter false answer"
         required
       />
-
-      <button id="submitNewQuizBtn">Submit new quiz</button>
+      {disable && (
+        <button disabled id="submitNewQuizBtn">
+          Submit new quiz
+        </button>
+      )}
+      {!disable && <button id="submitNewQuizBtn">Submit new quiz</button>}
+      {/* <button id="submitNewQuizBtn">Submit new quiz</button> */}
     </form>
   );
 }
