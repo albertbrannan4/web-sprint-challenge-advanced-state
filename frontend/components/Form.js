@@ -22,7 +22,7 @@ export function Form(props) {
       return setDisable(true);
     }
   }, [props.form]);
-  console.log(props);
+
   return (
     <form id="form" onSubmit={onSubmit}>
       <h2>Create New Quiz</h2>
@@ -59,7 +59,6 @@ export function Form(props) {
         </button>
       )}
       {!disable && <button id="submitNewQuizBtn">Submit new quiz</button>}
-      {/* <button id="submitNewQuizBtn">Submit new quiz</button> */}
     </form>
   );
 }
